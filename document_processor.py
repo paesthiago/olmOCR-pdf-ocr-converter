@@ -88,6 +88,15 @@ class DocumentProcessor:
         relative_path = f"{images_folder}/{image_filename}"
         return re.sub(r'!\[.*?\]\(.*?\)', f'![Imagem]({relative_path})', markdown_text)
     
+    @staticmethod
+    def sanitize_filename(filename: str) -> str:
+        """Sanitiza o nome do arquivo para ser seguro em URLs e sistemas de arquivo."""
+        # Substitui espaços por _
+        s = filename.replace(" ", "_")
+        # Remove caracteres não alfanuméricos (exceto - _ .)
+        s = re.sub(r'[^\w\-\.]', '', s)
+        return s
+
     def process_document(
         self,
         pdf_path: Path,
@@ -124,7 +133,8 @@ class DocumentProcessor:
             
             # Salva imagem se houver referências
             if "![" in page_text:
-                image_filename = f"{pdf_path.stem}_p{page_idx}.png"
+                safe_stem = self.sanitize_filename(pdf_path.stem)
+                image_filename = f"{safe_stem}_p{page_idx}.png"
                 image_path = output_images_dir / image_filename
                 page_image.save(str(image_path))
                 
@@ -191,7 +201,8 @@ class DocumentProcessor:
         
         # Salva imagem e corrige referências se necessário
         if "![" in page_text:
-            image_filename = f"{pdf_path.stem}_p{page_num}.png"
+            safe_stem = self.sanitize_filename(pdf_path.stem)
+            image_filename = f"{safe_stem}_p{page_num}.png"
             image_path = output_images_dir / image_filename
             page_image.save(str(image_path))
             
