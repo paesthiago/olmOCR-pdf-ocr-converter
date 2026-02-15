@@ -1,6 +1,5 @@
 """Configurações centralizadas da aplicação."""
 from dataclasses import dataclass
-from typing import Optional
 from pathlib import Path
 
 
@@ -15,7 +14,7 @@ class AppConfig:
     api_timeout: float = 600.0
     
     # Poppler Configuration
-    poppler_default_path: Optional[str] = None
+    poppler_default_path: str = r"C:\poppler\Library\bin"
     
     # Image Processing
     default_dpi: int = 150
