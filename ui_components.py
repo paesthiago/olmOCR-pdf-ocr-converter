@@ -23,7 +23,7 @@ class UIComponents:
             st.header("⚙️ Configurações")
             
             api_url = st.text_input("API URL", config.default_api_url)
-            poppler_path = st.text_input("Poppler Path", config.poppler_default_path)
+            poppler_path = st.text_input("Poppler Path", config.poppler_default_path or "")
             dpi = st.slider("DPI (Qualidade)", config.min_dpi, config.max_dpi, config.default_dpi)
             
             st.divider()
